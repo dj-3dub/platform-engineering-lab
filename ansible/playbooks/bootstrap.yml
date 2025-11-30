@@ -1,0 +1,20 @@
+---
+- name: Bootstrap Ubuntu hosts
+  hosts: ubuntu
+  become: true
+  roles:
+    - ubuntu-base
+    - security-hardening
+    - devtools
+    - docker-host
+    - monitoring-agent
+
+- name: Bootstrap RHEL hosts
+  hosts: rhel
+  become: true
+  roles:
+    - rhel-base
+    - security-hardening
+    - devtools
+    - docker-host
+    - monitoring-agent

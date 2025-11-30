@@ -1,0 +1,87 @@
+services:
+  # ---------- Python Dev ----------
+  python:
+    image: python:3.12
+    container_name: dev-python
+    working_dir: /workspace
+    volumes:
+      - ./python:/workspace
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- PowerShell Dev ----------
+  powershell:
+    image: mcr.microsoft.com/powershell
+    container_name: dev-powershell
+    working_dir: /workspace
+    volumes:
+      - ./powershell:/workspace
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- Go Dev ----------
+  go:
+    image: golang:1.22
+    container_name: dev-go
+    working_dir: /workspace
+    volumes:
+      - ./go:/workspace
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- .NET / C# Dev ----------
+  dotnet:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    container_name: dev-dotnet
+    working_dir: /workspace
+    volumes:
+      - ./dotnet:/workspace
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- AWS CLI ----------
+  awscli:
+    image: amazon/aws-cli
+    container_name: dev-awscli
+    working_dir: /workspace
+    volumes:
+      - ${HOME}/.aws:/root/.aws:ro       # your AWS creds from host
+      - ./aws:/workspace
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- Terraform ----------
+  terraform:
+    image: hashicorp/terraform:1.9
+    container_name: dev-terraform
+    working_dir: /workspace
+    volumes:
+      - ./terraform:/workspace
+      - ${HOME}/.aws:/root/.aws:ro       # reuse AWS creds for tf
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- GitHub CLI (built locally) ----------
+  gh:
+    build: ./gh
+    container_name: dev-ghcli
+    working_dir: /workspace
+    volumes:
+      - ./gh:/workspace
+      - ../dev-container:/project
+      - ${HOME}/.ssh:/root/.ssh:ro
+      - ${HOME}/.gitconfig:/root/.gitconfig:ro
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- Ansible Dev ----------
+  ansible:
+    build: ./ansible
+    container_name: dev-ansible
+    working_dir: /workspace
+    volumes:
+      - ./ansible:/workspace
+      - /home/tim/.ssh:/root/.ssh      # ← mount your SSH keys (READ/WRITE)
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # ---------- Rust Dev ----------
+  rust:
+    build: ./rust
+    container_name: dev-rust
+    working_dir: /workspace
+    volumes:
+      - ./rust:/workspace
+    entrypoint: ["tail", "-f", "/dev/null"]
